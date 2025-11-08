@@ -174,8 +174,8 @@ public class BusinessLayer {
         if (salary < 0) {
             throw new Exception("Salary must be a positive number");
         }
-        
-        Employee emp = new Employee(empName, empNo, hireDate, job, salary, deptId, mngId);
+        Employee emp = new Employee(empName, empNo, new java.sql.Date(hireDate.getTime()), job, salary, deptId, mngId);        
+
         return dl.insertEmployee(emp);
     }
     
@@ -239,7 +239,7 @@ public class BusinessLayer {
         
         existingEmp.setEmpName(empName);
         existingEmp.setEmpNo(empNo);
-        existingEmp.setHireDate(hireDate);
+        existingEmp.setHireDate(new java.sql.Date(hireDate.getTime()));
         existingEmp.setJob(job);
         existingEmp.setSalary(salary);
         existingEmp.setDeptId(deptId);

@@ -4,9 +4,9 @@ import business.BusinessLayer;
 import companydata.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
