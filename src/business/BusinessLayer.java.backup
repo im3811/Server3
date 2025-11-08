@@ -154,7 +154,7 @@ public class BusinessLayer {
             throw new Exception("Department with ID " + deptId + " does not exist in company " + COMPANY);
         }
         
-        if (mngId > 0) {
+        if (mngId != 0) {
             Employee manager = dl.getEmployee(mngId);
             if (manager == null) {
                 throw new Exception("Manager with ID " + mngId + " does not exist");
@@ -174,20 +174,9 @@ public class BusinessLayer {
         if (salary < 0) {
             throw new Exception("Salary must be a positive number");
         }
-        
-        // Special case: CEO with mng_id=0 - insert with temp mng_id, then update
-        int actualMngId = (mngId == 0) ? 1 : mngId;
-        
-        Employee emp = new Employee(empName, empNo, new java.sql.Date(hireDate.getTime()), job, salary, deptId, actualMngId);
-        emp = dl.insertEmployee(emp);
-        
-        // If CEO (mng_id=0), update to self-reference
-        if (mngId == 0) {
-            emp.setMngId(emp.getId());
-            emp = dl.updateEmployee(emp);
-        }
-        
-        return emp;
+        Employee emp = new Employee(empName, empNo, new java.sql.Date(hireDate.getTime()), job, salary, deptId, mngId);        
+
+        return dl.insertEmployee(emp);
     }
     
     public Employee updateEmployee(int empId, String empName, String empNo, String hireDateStr,
@@ -227,7 +216,7 @@ public class BusinessLayer {
             throw new Exception("Department with ID " + deptId + " does not exist in company " + COMPANY);
         }
         
-        if (mngId > 0 && mngId != empId) {
+        if (mngId != 0) {
             Employee manager = dl.getEmployee(mngId);
             if (manager == null) {
                 throw new Exception("Manager with ID " + mngId + " does not exist");
@@ -248,16 +237,13 @@ public class BusinessLayer {
             throw new Exception("Salary must be a positive number");
         }
         
-        // Handle mng_id=0 by converting to self-reference
-        int actualMngId = (mngId == 0) ? empId : mngId;
-        
         existingEmp.setEmpName(empName);
         existingEmp.setEmpNo(empNo);
         existingEmp.setHireDate(new java.sql.Date(hireDate.getTime()));
         existingEmp.setJob(job);
         existingEmp.setSalary(salary);
         existingEmp.setDeptId(deptId);
-        existingEmp.setMngId(actualMngId);
+        existingEmp.setMngId(mngId);
         
         return dl.updateEmployee(existingEmp);
     }
