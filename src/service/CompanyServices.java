@@ -305,7 +305,7 @@ public class CompanyServices {
             int deptId = input.get("dept_id").getAsInt();
             int mngId = input.get("mng_id").getAsInt();
             
-            Employee emp = bl.insertEmployee(empName, empNo, hireDate, job, salary, deptId, mngId);
+            Employee emp = bl.insertEmployee(empName, empNo, hireDate, job, salary, deptId, mngId); //Calling BusinessLayer to insert employee with validations
             
             JsonObject empObj = new JsonObject();
             empObj.addProperty("emp_id", emp.getId());

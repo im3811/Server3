@@ -179,7 +179,7 @@ public class BusinessLayer {
         int actualMngId = (mngId == 0) ? 1 : mngId;
         
         Employee emp = new Employee(empName, empNo, new java.sql.Date(hireDate.getTime()), job, salary, deptId, actualMngId);
-        emp = dl.insertEmployee(emp);
+        emp = dl.insertEmployee(emp); //Calling DataLayer to insert employee
         
         if (mngId == 0) {
             emp.setMngId(emp.getId());
@@ -257,11 +257,11 @@ public class BusinessLayer {
         existingEmp.setDeptId(deptId);
         existingEmp.setMngId(actualMngId);
         
-        return dl.updateEmployee(existingEmp);
+        return dl.updateEmployee(existingEmp); //Calling DataLayer to update employee in database
     }
     
     public int deleteEmployee(int empId) throws Exception {
-        return dl.deleteEmployee(empId);
+        return dl.deleteEmployee(empId); //Calling DataLayer to delete employee from database
     }
     
     private boolean isEmpNoUnique(String empNo) throws Exception { //Helper method to check whether department is unique
