@@ -24,7 +24,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteCompany();
+            int rowsDeleted = bl.deleteCompany(); //Calling business layer to delete company
             
             JsonObject response = new JsonObject();
             response.addProperty("success", company + "'s information deleted.");
@@ -45,7 +45,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            Department dept = bl.getDepartment(deptId);
+            Department dept = bl.getDepartment(deptId); //Calling the business layer
             
             if (dept == null) {
                 return buildErrorResponse("Department not found");
@@ -77,7 +77,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            List<Department> departments = bl.getAllDepartments();
+            List<Department> departments = bl.getAllDepartments(); //Calling business layer to get all departments
             
             StringBuilder jsonArray = new StringBuilder("[");
             for (int i = 0; i < departments.size(); i++) {
@@ -124,7 +124,7 @@ public class CompanyServices {
             String deptNo = input.get("dept_no").getAsString();
             String location = input.get("location").getAsString();
             
-            Department dept = bl.insertDepartment(deptName, deptNo, location);
+            Department dept = bl.insertDepartment(deptName, deptNo, location); //Calling BusinessLayer in order to insert
             
             JsonObject deptObj = new JsonObject();
             deptObj.addProperty("dept_id", dept.getId());
@@ -160,7 +160,7 @@ public class CompanyServices {
         try {
             bl = new BusinessLayer();
             
-            Department dept = bl.updateDepartment(deptId, deptName, deptNo, location);
+            Department dept = bl.updateDepartment(deptId, deptName, deptNo, location); //Calling the businessLayer in order to update
             
             JsonObject deptObj = new JsonObject();
             deptObj.addProperty("dept_id", dept.getId());
@@ -194,6 +194,10 @@ public class CompanyServices {
             bl = new BusinessLayer();
             int rowsDeleted = bl.deleteDepartment(deptId);
             
+            if (rowsDeleted == 0) {
+                return buildErrorResponse("Department with ID " + deptId + " not found");
+            }
+            
             JsonObject response = new JsonObject();
             response.addProperty("success", "Department " + deptId + " from " + company + " deleted.");
             
@@ -213,7 +217,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            Employee emp = bl.getEmployee(empId);
+            Employee emp = bl.getEmployee(empId); //Calling businessLayer to get the employee
             
             if (emp == null) {
                 return buildErrorResponse("Employee not found");
@@ -248,7 +252,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            List<Employee> employees = bl.getAllEmployees();
+            List<Employee> employees = bl.getAllEmployees(); //Calling businessLayer to get all employees
             
             StringBuilder jsonArray = new StringBuilder("[");
             for (int i = 0; i < employees.size(); i++) {
@@ -378,6 +382,10 @@ public class CompanyServices {
         try {
             bl = new BusinessLayer();
             int rowsDeleted = bl.deleteEmployee(empId);
+            
+            if (rowsDeleted == 0) {
+                return buildErrorResponse("Employee with ID " + empId + " not found");
+            }
             
             JsonObject response = new JsonObject();
             response.addProperty("success", "Employee " + empId + " deleted.");
@@ -539,6 +547,10 @@ public class CompanyServices {
         try {
             bl = new BusinessLayer();
             int rowsDeleted = bl.deleteTimecard(timecardId);
+            
+            if (rowsDeleted == 0) {
+                return buildErrorResponse("Timecard with ID " + timecardId + " not found");
+            }
             
             JsonObject response = new JsonObject();
             response.addProperty("success", "Timecard " + timecardId + " deleted.");

@@ -23,15 +23,15 @@ public class BusinessLayer {
     }
     
     public int deleteCompany() throws Exception {
-        return dl.deleteCompany(COMPANY);
+        return dl.deleteCompany(COMPANY); //deleting by using data layer
     }
     
     public Department getDepartment(int deptId) throws Exception {
-        return dl.getDepartment(COMPANY, deptId);
+        return dl.getDepartment(COMPANY, deptId); //getting department by calling dataLayer
     }
     
     public List<Department> getAllDepartments() throws Exception {
-        return dl.getAllDepartment(COMPANY);
+        return dl.getAllDepartment(COMPANY); //getting all departments by calling the dataLayer
     }
     
     public Department insertDepartment(String deptName, String deptNo, String location) throws Exception {
@@ -59,16 +59,17 @@ public class BusinessLayer {
             throw new Exception("Location must be 255 characters or less");
         }
         
-        Department dept = new Department(COMPANY, deptName, deptNo, location);
-        return dl.insertDepartment(dept);
+        Department dept = new Department(COMPANY, deptName, deptNo, location); //Creating the department object with company constant
+        return dl.insertDepartment(dept); //Call to DataLayer to insert to database
     }
     
     public Department updateDepartment(int deptId, String deptName, String deptNo, String location) throws Exception {
+        //Checking whether department exists
         Department existingDept = dl.getDepartment(COMPANY, deptId);
         if (existingDept == null) {
             throw new Exception("Department with ID " + deptId + " does not exist");
         }
-        
+        //in case dept_no is changing then check uniqueness 
         if (!deptNo.equals(existingDept.getDeptNo()) && !isDeptNoUnique(deptNo)) {
             throw new Exception("Department number must be unique across all companies");
         }
@@ -97,14 +98,14 @@ public class BusinessLayer {
         existingDept.setDeptNo(deptNo);
         existingDept.setLocation(location);
         
-        return dl.updateDepartment(existingDept);
+        return dl.updateDepartment(existingDept); //Calling dataLayer in order to update in database
     }
     
     public int deleteDepartment(int deptId) throws Exception {
-        return dl.deleteDepartment(COMPANY, deptId);
+        return dl.deleteDepartment(COMPANY, deptId); //Deleting the department in the dataLayer
     }
     
-    private boolean isDeptNoUnique(String deptNo) throws Exception {
+    private boolean isDeptNoUnique(String deptNo) throws Exception { //Helper method to check whether the depth number is unique
         List<Department> depts = dl.getAllDepartment(COMPANY);
         for (Department d : depts) {
             if (d.getDeptNo().equals(deptNo)) {
@@ -115,11 +116,11 @@ public class BusinessLayer {
     }
     
     public Employee getEmployee(int empId) throws Exception {
-        return dl.getEmployee(empId);
+        return dl.getEmployee(empId); //Calling DataLayer to retrieve employee from database
     }
     
     public List<Employee> getAllEmployees() throws Exception {
-        return dl.getAllEmployee(COMPANY);
+        return dl.getAllEmployee(COMPANY); //Calling DataLayer to get all employees for "im3811"
     }
     
     public Employee insertEmployee(String empName, String empNo, String hireDateStr, 
@@ -175,13 +176,11 @@ public class BusinessLayer {
             throw new Exception("Salary must be a positive number");
         }
         
-        // Special case: CEO with mng_id=0 - insert with temp mng_id, then update
         int actualMngId = (mngId == 0) ? 1 : mngId;
         
         Employee emp = new Employee(empName, empNo, new java.sql.Date(hireDate.getTime()), job, salary, deptId, actualMngId);
         emp = dl.insertEmployee(emp);
         
-        // If CEO (mng_id=0), update to self-reference
         if (mngId == 0) {
             emp.setMngId(emp.getId());
             emp = dl.updateEmployee(emp);
@@ -248,7 +247,6 @@ public class BusinessLayer {
             throw new Exception("Salary must be a positive number");
         }
         
-        // Handle mng_id=0 by converting to self-reference
         int actualMngId = (mngId == 0) ? empId : mngId;
         
         existingEmp.setEmpName(empName);
@@ -266,7 +264,7 @@ public class BusinessLayer {
         return dl.deleteEmployee(empId);
     }
     
-    private boolean isEmpNoUnique(String empNo) throws Exception {
+    private boolean isEmpNoUnique(String empNo) throws Exception { //Helper method to check whether department is unique
         List<Employee> emps = dl.getAllEmployee(COMPANY);
         for (Employee e : emps) {
             if (e.getEmpNo().equals(empNo)) {
