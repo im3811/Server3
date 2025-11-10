@@ -192,7 +192,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteDepartment(deptId);
+            int rowsDeleted = bl.deleteDepartment(deptId); //Calling to delete department
             
             if (rowsDeleted == 0) {
                 return buildErrorResponse("Department with ID " + deptId + " not found");
@@ -347,7 +347,7 @@ public class CompanyServices {
         try {
             bl = new BusinessLayer();
             
-            Employee emp = bl.updateEmployee(empId, empName, empNo, hireDate, job, salary, deptId, mngId);
+            Employee emp = bl.updateEmployee(empId, empName, empNo, hireDate, job, salary, deptId, mngId); //Calling BusinessLayer to update employee with validations
             
             JsonObject empObj = new JsonObject();
             empObj.addProperty("emp_id", emp.getId());
@@ -381,7 +381,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteEmployee(empId);
+            int rowsDeleted = bl.deleteEmployee(empId); //Calling BusinessLayer to delete employee
             
             if (rowsDeleted == 0) {
                 return buildErrorResponse("Employee with ID " + empId + " not found");
@@ -406,7 +406,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            Timecard tc = bl.getTimecard(timecardId);
+            Timecard tc = bl.getTimecard(timecardId); //Calling BusinessLayer to get the timecard
             
             if (tc == null) {
                 return buildErrorResponse("Timecard not found");
@@ -437,7 +437,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            List<Timecard> timecards = bl.getAllTimecards(empId);
+            List<Timecard> timecards = bl.getAllTimecards(empId); //Callling BusinessLayer to get all timecards for employee
             
             StringBuilder jsonArray = new StringBuilder("[");
             for (int i = 0; i < timecards.size(); i++) {
@@ -482,7 +482,7 @@ public class CompanyServices {
             String startTime = input.get("start_time").getAsString();
             String endTime = input.get("end_time").getAsString();
             
-            Timecard tc = bl.insertTimecard(empId, startTime, endTime);
+            Timecard tc = bl.insertTimecard(empId, startTime, endTime); //Calling BusinessLayer to insert timecard with validations
             
             JsonObject tcObj = new JsonObject();
             tcObj.addProperty("timecard_id", tc.getId());
@@ -516,7 +516,7 @@ public class CompanyServices {
         try {
             bl = new BusinessLayer();
             
-            Timecard tc = bl.updateTimecard(timecardId, empId, startTime, endTime);
+            Timecard tc = bl.updateTimecard(timecardId, empId, startTime, endTime); //Calling BusinessLayer to update timecard with validations
             
             JsonObject tcObj = new JsonObject();
             tcObj.addProperty("timecard_id", tc.getId());
@@ -546,7 +546,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteTimecard(timecardId);
+            int rowsDeleted = bl.deleteTimecard(timecardId); //Calling BusinessLayer to delete the timecard
             
             if (rowsDeleted == 0) {
                 return buildErrorResponse("Timecard with ID " + timecardId + " not found");

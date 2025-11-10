@@ -275,11 +275,11 @@ public class BusinessLayer {
     }
     
     public Timecard getTimecard(int timecardId) throws Exception {
-        return dl.getTimecard(timecardId);
+        return dl.getTimecard(timecardId); //Getting the timecard
     }
     
     public List<Timecard> getAllTimecards(int empId) throws Exception {
-        return dl.getAllTimecard(empId);
+        return dl.getAllTimecard(empId); //Getting all of the timecards
     }
     
     public Timecard insertTimecard(int empId, String startTimeStr, String endTimeStr) throws Exception {
@@ -328,7 +328,7 @@ public class BusinessLayer {
         }
         
         Timecard tc = new Timecard(startTime, endTime, empId);
-        return dl.insertTimecard(tc);
+        return dl.insertTimecard(tc); //Calling DataLayer to insert it into the database
     }
     
     public Timecard updateTimecard(int timecardId, int empId, String startTimeStr, String endTimeStr) throws Exception {
@@ -385,11 +385,11 @@ public class BusinessLayer {
         existingTc.setEndTime(endTime);
         existingTc.setEmpId(empId);
         
-        return dl.updateTimecard(existingTc);
+        return dl.updateTimecard(existingTc); //Calling DataLayer to update timecard in database
     }
     
     public int deleteTimecard(int timecardId) throws Exception {
-        return dl.deleteTimecard(timecardId);
+        return dl.deleteTimecard(timecardId); //Calling dataLayer to delete timeCard from the db
     }
     
     private Date parseDate(String dateStr) throws Exception {
