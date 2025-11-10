@@ -24,7 +24,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteCompany(); //Calling business layer to delete company
+            int rowsDeleted = bl.deleteCompany(company); //Calling business layer to delete company
             
             JsonObject response = new JsonObject();
             response.addProperty("success", company + "'s information deleted.");

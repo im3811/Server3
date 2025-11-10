@@ -23,7 +23,7 @@ public class BusinessLayer {
     }
     
     public int deleteCompany() throws Exception {
-        return dl.deleteCompany(COMPANY); //deleting by using data layer
+        return dl.deleteCompany(company); //deleting by using data layer
     }
     
     public Department getDepartment(int deptId) throws Exception {
