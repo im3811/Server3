@@ -281,30 +281,19 @@ public class BusinessLayer {
         return dl.getTimecard(timecardId); //Getting the timecard
     }
    
-
-
-  // And COMPLETELY REPLACE it with this:
-  // Make sure you import java.util.ArrayList; at the top of the file!
-  public List<Timecard> getAllTimecards(String company) { // Note the new String parameter
-      // 1. Get all employees for the given company from the data layer.
-      List<Employee> employees = dl.getAllEmployees(company);
+  public List<Timecard> getAllTimecards(String company) {
+      List<Employee> employees = dl.getAllEmployee(company); 
       
-      // 2. Create a master list to hold all the results.
       List<Timecard> allTimecards = new ArrayList<>();
       
-      // 3. Loop through each employee found.
       for (Employee emp : employees) {
-          // 4. For each employee, get their individual timecards.
-          //    (The data layer method is named getAllTimecard, singular).
           List<Timecard> employeeTimecards = dl.getAllTimecard(emp.getId());
           
-          // 5. If timecards were found for this employee, add them to the master list.
           if (employeeTimecards != null) {
               allTimecards.addAll(employeeTimecards);
           }
       }
       
-      // 6. Return the final, complete list of all timecards for the company.
       return allTimecards;
   }
 
