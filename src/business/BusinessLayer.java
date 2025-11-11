@@ -278,8 +278,13 @@ public class BusinessLayer {
         return dl.getTimecard(timecardId); //Getting the timecard
     }
     
-    public List<Timecard> getAllTimecards(String company) throws Exception {
-        return dl.getAllTimecard(company); //Getting all of the timecards
+    public List<Timecard> getAllTimecards(int empId) throws Exception {
+        return dl.getAllTimecards(empId); //Getting all of the timecards
+    }
+
+    public List<Timecard> getAllTimecardsForCompany(String company) {
+
+        return dl.getAllTimecardsForCompany(company);
     }
     
     public Timecard insertTimecard(int empId, String startTimeStr, String endTimeStr) throws Exception {
