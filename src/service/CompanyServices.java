@@ -475,6 +475,49 @@ public class CompanyServices {
 //         if (bl != null) bl.close();
 //     }
 // }
+      
+@GET
+@Path("timecards")
+@Produces(MediaType.APPLICATION_JSON)
+public Response getAllTimecards(@QueryParam("company") String company) {
+    BusinessLayer bl = null;
+    try {
+        bl = new BusinessLayer();
+        // This will call the updated method in the BusinessLayer
+        List<Timecard> timecards = bl.getAllTimecards(company);
+
+        if (timecards == null || timecards.isEmpty()) {
+            return buildErrorResponse("Timecard not found");
+        }
+
+        StringBuilder jsonArray = new StringBuilder("[");
+        for (int i = 0; i < timecards.size(); i++) {
+            Timecard tc = timecards.get(i);
+            
+            JsonObject tcObj = new JsonObject();
+            tcObj.addProperty("timecard_id", tc.getId());
+            tcObj.addProperty("start_time", timestampFormat.format(tc.getStartTime()));
+            tcObj.addProperty("end_time", timestampFormat.format(tc.getEndTime()));
+            tcObj.addProperty("emp_id", tc.getEmpId());
+            
+            JsonObject wrapper = new JsonObject();
+            wrapper.add("timecard", tcObj);
+            
+            jsonArray.append(gson.toJson(wrapper));
+            if (i < timecards.size() - 1) {
+                jsonArray.append(",");
+            }
+        }
+        jsonArray.append("]");
+        
+        return Response.ok(jsonArray.toString()).build();
+        
+    } catch (Exception e) {
+        return buildErrorResponse(e.getMessage());
+    } finally {
+        if (bl != null) bl.close();
+    }
+}
     
     @PUT
     @Path("timecard")
