@@ -23,7 +23,7 @@ public class BusinessLayer {
     }
     
     public int deleteCompany() throws Exception {
-        return dl.deleteCompany(company); //deleting by using data layer
+        return dl.deleteCompany(COMPANY); //deleting by using data layer
     }
     
     public Department getDepartment(int deptId) throws Exception {
@@ -278,8 +278,8 @@ public class BusinessLayer {
         return dl.getTimecard(timecardId); //Getting the timecard
     }
     
-    public List<Timecard> getAllTimecards(int empId) throws Exception {
-        return dl.getAllTimecard(empId); //Getting all of the timecards
+    public List<Timecard> getAllTimecards(String company) throws Exception {
+        return dl.getAllTimecard(company); //Getting all of the timecards
     }
     
     public Timecard insertTimecard(int empId, String startTimeStr, String endTimeStr) throws Exception {

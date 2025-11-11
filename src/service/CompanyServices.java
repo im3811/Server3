@@ -24,7 +24,7 @@ public class CompanyServices {
         BusinessLayer bl = null;
         try {
             bl = new BusinessLayer();
-            int rowsDeleted = bl.deleteCompany(company); //Calling business layer to delete company
+            int rowsDeleted = bl.deleteCompany(); //Calling business layer to delete company
             
             JsonObject response = new JsonObject();
             response.addProperty("success", company + "'s information deleted.");
@@ -430,43 +430,51 @@ public class CompanyServices {
         }
     }
     
-    @GET
-    @Path("timecards")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTimecards(@QueryParam("emp_id") int empId) {
-        BusinessLayer bl = null;
-        try {
-            bl = new BusinessLayer();
-            List<Timecard> timecards = bl.getAllTimecards(empId); //Callling BusinessLayer to get all timecards for employee
-            
-            StringBuilder jsonArray = new StringBuilder("[");
-            for (int i = 0; i < timecards.size(); i++) {
-                Timecard tc = timecards.get(i);
-                
-                JsonObject tcObj = new JsonObject();
-                tcObj.addProperty("timecard_id", tc.getId());
-                tcObj.addProperty("start_time", timestampFormat.format(tc.getStartTime()));
-                tcObj.addProperty("end_time", timestampFormat.format(tc.getEndTime()));
-                tcObj.addProperty("emp_id", tc.getEmpId());
-                
-                JsonObject wrapper = new JsonObject();
-                wrapper.add("timecard", tcObj);
-                
-                jsonArray.append(gson.toJson(wrapper));
-                if (i < timecards.size() - 1) {
-                    jsonArray.append(",");
-                }
-            }
-            jsonArray.append("]");
-            
-            return Response.ok(jsonArray.toString()).build();
-            
-        } catch (Exception e) {
-            return buildErrorResponse(e.getMessage());
-        } finally {
-            if (bl != null) bl.close();
+@GET
+@Path("timecards")
+@Produces(MediaType.APPLICATION_JSON)
+public Response getAllTimecardsForCompany(@QueryParam("company") String company) { // Changed parameter
+    BusinessLayer bl = null;
+    try {
+        bl = new BusinessLayer();
+        // We will call a NEW business layer method
+        List<Timecard> timecards = bl.getAllTimecardsForCompany(company);
+        
+        if (timecards.isEmpty()) {
+            // Optional: return an empty list or a "not found" message
+            return Response.ok("[]").build();
         }
+
+        // The rest of your JSON building logic remains the same
+        StringBuilder jsonArray = new StringBuilder("[");
+        for (int i = 0; i < timecards.size(); i++) {
+            Timecard tc = timecards.get(i);
+            
+            JsonObject tcObj = new JsonObject();
+            tcObj.addProperty("timecard_id", tc.getId());
+            // Use the timestampFormat to properly format the dates
+            tcObj.addProperty("start_time", timestampFormat.format(tc.getStartTime()));
+            tcObj.addProperty("end_time", timestampFormat.format(tc.getEndTime()));
+            tcObj.addProperty("emp_id", tc.getEmpId());
+            
+            JsonObject wrapper = new JsonObject();
+            wrapper.add("timecard", tcObj);
+            
+            jsonArray.append(gson.toJson(wrapper));
+            if (i < timecards.size() - 1) {
+                jsonArray.append(",");
+            }
+        }
+        jsonArray.append("]");
+        
+        return Response.ok(jsonArray.toString()).build();
+        
+    } catch (Exception e) {
+        return buildErrorResponse(e.getMessage());
+    } finally {
+        if (bl != null) bl.close();
     }
+}
     
     @PUT
     @Path("timecard")
