@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 public class BusinessLayer {
     
@@ -21,6 +22,8 @@ public class BusinessLayer {
             dl.close();
         }
     }
+
+
     
     public int deleteCompany() throws Exception {
         return dl.deleteCompany(COMPANY); //deleting by using data layer
